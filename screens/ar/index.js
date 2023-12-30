@@ -5,7 +5,8 @@ import {
 import {
   ViroARScene,
   ViroText,
-  ViroConstants,
+  ViroTrackingStateConstants,
+  ViroARTrackingReasonConstants,
   ViroARSceneNavigator,
 } from '@viro-community/react-viro';
 
@@ -15,9 +16,9 @@ const ARScreen = () => {
 
   function onInitialized(state, reason) {
     console.log('guncelleme', state, reason);
-    if (state === ViroConstants.TRACKING_NORMAL) {
+    if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
       setText('Hello World!');
-    } else if (state === ViroConstants.TRACKING_NONE) {
+    } else if (state === ViroTrackingStateConstants.TRACKING_UNAVAILABLE) {
       // Handle loss of tracking
     }
   }
