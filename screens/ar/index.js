@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react"
 import {
   StyleSheet
 } from "react-native";
@@ -6,7 +6,6 @@ import {
   ViroARScene,
   ViroText,
   ViroTrackingStateConstants,
-  ViroARTrackingReasonConstants,
   ViroARSceneNavigator,
 } from '@viro-community/react-viro';
 

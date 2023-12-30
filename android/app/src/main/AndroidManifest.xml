@@ -1,31 +1,31 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools">
 
+  <uses-sdk tools:overrideLibrary="com.viromedia.virobridge, com.viro.renderer, com.viro.core" />
+
   <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+  <!-- Required for AR -->
   <uses-permission android:name="android.permission.CAMERA" />
-  <!-- You may need these if doing any screen recording from within the app -->
+
+  <!-- Required for Camera Roll access -->
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-  <!-- Other camera related features -->
-  <uses-feature android:name="android.hardware.camera" />
-  <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"
-    tools:replace="required" />
-  <!-- Specifying OpenGL verison or requirements -->
-  <uses-feature android:glEsVersion="0x00030000" android:required="false" tools:node="remove"
-    tools:replace="required" />
-  <!-- Usage of accelerometer and gyroscope -->
-  <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="false"
-    tools:replace="required" />
-  <uses-feature android:name="android.hardware.sensor.gyroscope" android:required="false"
-    tools:replace="required" />
+
+  <uses-feature android:name="android.hardware.camera.ar" android:required="true" />
+  <uses-feature android:name="android.hardware.screen.portrait" />
 
   <application android:name=".MainApplication"
     tools:replace="android:label"
     android:label="@string/original_app_name"
     android:icon="@mipmap/ic_launcher"
+    android:usesCleartextTraffic="true"
     android:roundIcon="@mipmap/ic_launcher_round"
     android:allowBackup="false" android:theme="@style/AppTheme">
+
     <meta-data android:name="com.google.ar.core" android:value="optional" />
+
     <activity android:name=".MainActivity"
       android:label="@string/original_app_name"
       android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
@@ -35,6 +35,7 @@
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
+        <category android:name="com.google.intent.category.CARDBOARD" />
       </intent-filter>
     </activity>
   </application>
