@@ -13,12 +13,16 @@ class ChallengesSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             "id",
             "image",
+            "model_file",
+            "name",
+            "description"
         )
 
 
 class ChallengesUploadSerializer(serializers.ModelSerializer):
     image = serializers.ImageField()
+    model_file = serializers.FileField()
 
     class Meta:
         model = Challenges
-        fields = ("image",)
+        fields = ("image","model_file")

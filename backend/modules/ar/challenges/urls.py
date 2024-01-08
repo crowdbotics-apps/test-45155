@@ -6,8 +6,8 @@ from .viewsets import ChallengesViewSet, ChallengesUploadView
 
 
 router = routers.DefaultRouter()
-router.register(r'photos/user', ChallengesViewSet)
+router.register(r'user', ChallengesViewSet)
 urlpatterns = [
     path('', include(router.urls)),
-    path('upload_image/', ChallengesUploadView.as_view()),
+    path('upload_model/', ChallengesUploadView.as_view()),
 ]
