@@ -1,14 +1,27 @@
 import React, { useState } from "react"
 import {
-  StyleSheet
+  StyleSheet,
+  Image
 } from "react-native";
 import {
   ViroARScene,
   ViroText,
+  ViroMaterials,
   ViroTrackingStateConstants,
   ViroARSceneNavigator,
+  Viro3DObject
 } from '@viro-community/react-viro';
 
+ViroMaterials.createMaterials({
+  green_mtl: {
+    diffuseColor: "#0B6623",
+    lightingModel: "PBR"
+  },
+  white_mtl: {
+    diffuseColor: "#FFFFFF",
+    lightingModel: "PBR"
+  }
+});
 
 const ARScreen = () => {
   const [text, setText] = useState('Initializing AR...');
@@ -24,13 +37,20 @@ const ARScreen = () => {
 
   return (
     <ViroARScene onTrackingUpdated={onInitialized}>
-      <ViroText
-        text={text}
-        scale={[0.5, 0.5, 0.5]}
-        position={[0, 0, -1]}
-        style={styles.helloWorldTextStyle}
+      <Viro3DObject
+        source={require('../../assets/Tree.obj')} /// this works
+        position={[0, 0, -5]}
+        scale={[0.05, 0.05, 0.05]}
+        rotation={[-45,50,40]}
+        type="OBJ"
+        lightReceivingBitMask={3}
+        resources={[
+          require('../../assets/Tree.mtl'),
+        ]}
+        materials={ "green_mtl" }
       />
     </ViroARScene>
+
   );
 };
 
@@ -55,6 +75,13 @@ var styles = StyleSheet.create({
     color: '#ffffff',
     textAlignVertical: 'center',
     textAlign: 'center',
+  },
+  logo: {
+    height: 180,
+    width: 180,
+    padding: 40,
+    borderRadius: 30,
+    margin: 40
   },
 });
 

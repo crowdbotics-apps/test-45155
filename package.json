@@ -17,7 +17,9 @@
     "@react-native-masked-view/masked-view": "^0.2.9",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/stack": "^6.3.16",
+    "@react-three/fiber": "^8.15.13",
     "@reduxjs/toolkit": "^1.9.5",
+    "@types/three": "^0.160.0",
     "@viro-community/react-viro": "npm:react-viro-sw",
     "axios": "^1.4.0",
     "react": "18.2.0",
@@ -35,7 +37,8 @@
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "^0.18.10",
     "react-redux": "^8.0.5",
-    "redux": "^4.2.1"
+    "redux": "^4.2.1",
+    "three": "^0.160.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
