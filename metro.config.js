@@ -35,7 +35,17 @@ module.exports = {
   },
   resolver: {
     sourceExts: ["js", "jsx", "ts", "tsx", "json"],
-    assetExts: ["db", "mp3", "ttf", "obj", "png", "jpg", "otf", "mtl", "vrx","fbx"],
+    assetExts: ["db", "mp3", "ttf", "obj", "png", "jpg", "otf", "mtl", "vrx", "fbx", "obj",
+      "mtl",
+      "mp3",
+      "JPG",
+      "vrx",
+      "hdr",
+      "gltf",
+      "glb",
+      "bin",
+      "arobject",
+      "gif","PNG"],
     extraNodeModules: new Proxy(extraNodeModules, {
       get: (target, name) =>
         //redirects dependencies referenced from extraNodeModules to local node_modules
