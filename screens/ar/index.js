@@ -9,7 +9,10 @@ import {
   ViroMaterials,
   ViroTrackingStateConstants,
   ViroARSceneNavigator,
-  Viro3DObject
+  Viro3DObject,
+  ViroAmbientLight,
+  ViroDirectionalLight,
+  ViroSpotLight
 } from '@viro-community/react-viro';
 
 ViroMaterials.createMaterials({
@@ -34,20 +37,49 @@ const ARScreen = () => {
       // Handle loss of tracking
     }
   }
-
   return (
     <ViroARScene onTrackingUpdated={onInitialized}>
+      <ViroAmbientLight color="#ffffff" intensity={20} />
+
+      {/* DirectionalLight with the direction away from the user, pointed upwards, to light up the "face" of the model */}
+      <ViroDirectionalLight color="#ffffff" direction={[0, -1, -.2]} />
+
+      {/* Spotlight on top of the model to highlight this model*/}
+      <ViroSpotLight
+        innerAngle={5}
+        outerAngle={90}
+        direction={[0, 1, 0]}
+        position={[0, -7, 0]}
+        color="#ffffff"
+        intensity={250} />
+
       <Viro3DObject
-        source={require('../../assets/Tree.obj')} /// this works
-        position={[0, 0, -5]}
+        key="obj_3d3"
+        source={require('../../assets/Quinn_Low.vrx')} /// this works
+        position={[0, 0, -20]}
         scale={[0.05, 0.05, 0.05]}
-        rotation={[-45,50,40]}
-        type="OBJ"
-        lightReceivingBitMask={3}
-        resources={[
-          require('../../assets/Tree.mtl'),
-        ]}
-        materials={ "green_mtl" }
+        type="VRX"
+      />
+      <Viro3DObject
+        key="obj_3d2"
+        source={require('../../assets/Quinn_High.vrx')} /// this works
+        position={[0, 0, -20]}
+        scale={[0.05, 0.05, 0.05]}
+        type="VRX"
+      />
+
+      <Viro3DObject
+        key="obj_3d1"
+        source={require('../../assets/Quin_texture_anim2.vrx')} /// this works
+        position={[0, 0, -20]}
+        scale={[0.05, 0.05, 0.05]}
+        type="VRX"
+        animation={{
+          name: 'Take 001',
+          run: true,
+          loop: true,
+          delay: 1000
+        }}
       />
     </ViroARScene>
 
