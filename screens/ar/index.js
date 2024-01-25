@@ -5,7 +5,7 @@ import {
 } from "react-native";
 import {
   ViroARScene,
-  ViroText,
+  ViroARCamera,
   ViroMaterials,
   ViroTrackingStateConstants,
   ViroARSceneNavigator,
@@ -18,6 +18,11 @@ import {
 ViroMaterials.createMaterials({
   pbr: {
     lightingModel: "PBR",
+    blendMode: "Alpha",
+    bloomThreshold: 1,
+    bloomEnabled: true,
+    diffuseTexture: require('../../assets/Quinn_opacity/T_Quinn_01_emissive.png'),
+    specularTexture: require('../../assets/Quinn_opacity/T_Quinn_02ID_opacity.png'),
   },
 });
 
@@ -216,47 +221,54 @@ const ARScreen = () => {
       {/* <Viro3DObject
         key="obj_3d1"
         source={require('../../assets/Quin_texture_anim2/Quin_texture_anim2.vrx')} /// this works
-        position={[-10, -8, -20]}
-        scale={[0.08, 0.08, 0.08]}
-        type="VRX"
-        materials={"pbr"}
-        resources={[
-          require('../../assets/Quin_texture_anim2/T_Quinn_01ID_D.PNG'),
-          require('../../assets/Quin_texture_anim2/T_Quinn_01ID_Tan.PNG'),
-          require('../../assets/Quin_texture_anim2/T_Quinn_02ID_D.PNG'),
-          require('../../assets/Quin_texture_anim2/T_Quinn_02ID_Tan.PNG'),]}
-
-        rotation={[-270, -10, 0]}
-        animation={{
-          name: 'Take 001',
-          run: true,
-          loop: true,
-          delay: 1000
-        }}
+          position={[0, 0, -20]}
+          highAccuracyEvents={true}
+          scale={scale}
+          type="VRX"
+          materials={"pbr"}
+          onDrag={_onDrag}
+          onHover={_onHoverDoSomething}
+          onScroll={_onScroll}
+          onSwipe={_onSwipe}
+          onTouch={_onTouch}
+          onPinch={_onPinch}
+          onRotate={_onRotate}
+          rotation={rotate}
+          onFuse={{ callback: _onFuse, timeToFuse: 3000 }}
+          animation={{
+            name: 'Take 001',
+            run: true,
+            loop: true,
+            delay: 1000
+          }}
       /> */}
-      <Viro3DObject
-        key="obj_3d1"
-        source={require('../../assets/Quinn_opacity/Quinn_opacity.vrx')} /// this works
-        position={[0, 0, -20]}
-        scale={scale}
-        type="VRX"
-        materials={"pbr"}
-        onDrag={_onDrag}
-        onHover={_onHoverDoSomething}
-        onScroll={_onScroll}
-        onSwipe={_onSwipe}
-        onTouch={_onTouch}
-        onPinch={_onPinch}
-        onRotate={_onRotate}
-        rotation={rotate}
-        onFuse={{ callback: _onFuse, timeToFuse: 3000 }}
-        animation={{
-          name: 'Take 001',
-          run: true,
-          loop: true,
-          delay: 1000
-        }}
-      />
+
+      <ViroARCamera>
+        <Viro3DObject
+          key="obj_3d1"
+          source={require('../../assets/Quinn_opacity/Quinn_opacity.vrx')} /// this works
+          position={[0, 0, -20]}
+          highAccuracyEvents={true}
+          scale={scale}
+          type="VRX"
+          materials={"pbr"}
+          onDrag={_onDrag}
+          onHover={_onHoverDoSomething}
+          onScroll={_onScroll}
+          onSwipe={_onSwipe}
+          onTouch={_onTouch}
+          onPinch={_onPinch}
+          onRotate={_onRotate}
+          rotation={rotate}
+          onFuse={{ callback: _onFuse, timeToFuse: 3000 }}
+          animation={{
+            name: 'Take 001',
+            run: true,
+            loop: true,
+            delay: 1000
+          }}
+        />
+      </ViroARCamera>
     </ViroARScene>
 
   );
