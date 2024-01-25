@@ -23,6 +23,8 @@ ViroMaterials.createMaterials({
 
 const ARScreen = () => {
   const [text, setText] = useState('Initializing AR...');
+  const [scale, setScale] = useState([0.08, 0.08, 0.08]);
+  const [rotate, setRotate] = useState([0, 0, 0]);
 
   function onInitialized(state, reason) {
     console.log('guncelleme', state, reason);
@@ -32,6 +34,92 @@ const ARScreen = () => {
       // Handle loss of tracking
     }
   }
+
+  function _onDrag(draggedToPosition, source) {
+    console.log(
+      "Dragged to: x" +
+      draggedToPosition[0] +
+      " y:" +
+      draggedToPosition[1] +
+      " z: " +
+      draggedToPosition[2]
+    );
+  }
+
+
+  function _onHoverDoSomething(isHovering, source) {
+    if (isHovering) {
+      console.log("We are hovering onto the image!");
+    } else {
+      console.log("We are not longer hovering on the image!");
+    }
+  }
+
+  function _onPinch(pinchState, scaleFactor, source) {
+    let newScale = [
+      scale[0] * scaleFactor,
+      scale[1] * scaleFactor,
+      scale[2] * scaleFactor
+    ];
+
+    if (scale[0] < 0.05) {
+      return
+    }
+    if (scale[0] > 0.5) {
+      return
+    }
+    if (pinchState == 3) {
+      setScale(newScale);
+      return;
+    }
+
+    setScale(newScale)
+  };
+
+  function _onScroll(scrollPosition, source) {
+    console.log(
+      "Scrolled to: x" + scrollPosition[0] + " y:" + scrollPosition[1]
+    );
+  }
+
+  function _onSwipe(swipeState, source) {
+    if (swipeState == 1) {
+      console.log("Swiped up");
+    } else if (swipeState == 2) {
+      console.log("Swiped down");
+    } else if (swipeState == 3) {
+      console.log("Swiped left");
+    } else if (swipeState == 4) {
+      console.log("Swiped right");
+    }
+  }
+
+  function _onRotate(rotateState, rotationFactor, source) {
+    if (rotateState == 3) {
+      const rotation = [rotate[0], rotate[1] + rotationFactor, rotate[2]]
+      setRotate(rotation)
+      return;
+    }
+    const rotation = [rotate[0], rotate[1] + rotationFactor, rotate[2]]
+    setRotate(rotation)
+  }
+
+  function _onTouch(state, touchPos, source) {
+    var touchX = touchPos[0];
+    var touchY = touchPos[1];
+    if (state == 1) {
+      // Touch Down
+    } else if (state == 2) {
+      // Touch Down Move
+    } else if (state == 3) {
+      // Touch Up
+    }
+  }
+
+  function _onFuse(source) {
+    // User has hovered over object for timeToFuse milliseconds
+  }
+
   return (
     <ViroARScene onTrackingUpdated={onInitialized}>
       <ViroAmbientLight color="#ffffff" intensity={20} />
@@ -65,7 +153,7 @@ const ARScreen = () => {
         shadowOpacity={1.0}
       />
 
-      <Viro3DObject
+      {/* <Viro3DObject
         key="obj_3d3"
         source={require('../../assets/Quinn_Low/Quinn_Low.vrx')} /// this works
         position={[0, -8, -20]}
@@ -83,9 +171,9 @@ const ARScreen = () => {
           loop: true,
           delay: 1000
         }}
-      />
+      /> */}
 
-      <Viro3DObject
+      {/* <Viro3DObject
         key="obj_3d5"
         source={require('../../assets/Quinn_Med/Quinn_Med.vrx')} /// this works
         position={[0, -8, -20]}
@@ -103,7 +191,7 @@ const ARScreen = () => {
           loop: true,
           delay: 1000
         }}
-      />
+      /> */}
 
       {/* <Viro3DObject
         key="obj_3d2"
@@ -146,6 +234,29 @@ const ARScreen = () => {
           delay: 1000
         }}
       /> */}
+      <Viro3DObject
+        key="obj_3d1"
+        source={require('../../assets/Quinn_opacity/Quinn_opacity.vrx')} /// this works
+        position={[0, 0, -20]}
+        scale={scale}
+        type="VRX"
+        materials={"pbr"}
+        onDrag={_onDrag}
+        onHover={_onHoverDoSomething}
+        onScroll={_onScroll}
+        onSwipe={_onSwipe}
+        onTouch={_onTouch}
+        onPinch={_onPinch}
+        onRotate={_onRotate}
+        rotation={rotate}
+        onFuse={{ callback: _onFuse, timeToFuse: 3000 }}
+        animation={{
+          name: 'Take 001',
+          run: true,
+          loop: true,
+          delay: 1000
+        }}
+      />
     </ViroARScene>
 
   );
