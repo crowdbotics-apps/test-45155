@@ -1,7 +1,10 @@
 import React, { useState } from "react"
 import {
   StyleSheet,
-  Image
+  View,
+  TouchableOpacity,
+  Text,
+  Dimensions
 } from "react-native";
 import {
   ViroARScene,
@@ -14,6 +17,7 @@ import {
   ViroDirectionalLight,
   ViroSpotLight
 } from '@viro-community/react-viro';
+let ScreenHeight = Dimensions.get("window").height;
 
 ViroMaterials.createMaterials({
   pbr: {
@@ -274,23 +278,79 @@ const ARScreen = () => {
   );
 };
 
-const VRScreen = () => {
-  return (
-    <ViroARSceneNavigator
-      autofocus={true}
-      pbrEnabled={true}
-      hdrEnabled={true}
-      bloomEnabled={true}
-      initialScene={{
-        scene: ARScreen,
-      }}
-      style={styles.f1}
-    />
-  );
-};
 
+const ArChallengeCapture = ({
+
+}) => {
+
+  class ViroARSceneMain extends React.Component {
+
+    constructor() {
+      super();
+      this._setARNavigatorRef = this._setARNavigatorRef.bind(this);
+      this.startRecordVideo = this.startRecordVideo.bind(this);
+      this.stopRecordVideo = this.stopRecordVideo.bind(this);
+    }
+
+    _setARNavigatorRef(ARNavigator) {
+      this._arNavigator = ARNavigator;
+    }
+
+    async startRecordVideo() {
+      const onError = (error) => {
+        console.log("startRecordVideo: error:", error)
+      }
+      this._arNavigator
+        ._startVideoRecording('recording', false, onError)
+    }
+
+    async stopRecordVideo() {
+      const retDict = await this._arNavigator._stopVideoRecording()
+      console.log("stopRecordVideo:", retDict)
+    }
+
+
+    render() {
+      return (
+        <View
+          style={styles.mainContainer}>
+          <ViroARSceneNavigator
+            autofocus={true}
+            pbrEnabled={true}
+            hdrEnabled={true}
+            bloomEnabled={true}
+            ref={this._setARNavigatorRef}
+            initialScene={{
+              scene: ARScreen,
+            }}
+            style={styles.f1}
+          />
+          <TouchableOpacity onPress={() => {
+            this.startRecordVideo()
+          }} style={{ position: 'absolute', bottom: 30, left: 20, backgroundColor: '#00000050', padding: 10 }}>
+            <Text style={{ fontSize: 20, color: '#fff' }}>Start Record</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {
+            this.stopRecordVideo()
+          }} style={{ position: 'absolute', bottom: 30, right: 20, backgroundColor: '#00000050', padding: 10 }}>
+            <Text style={{ fontSize: 20, color: '#fff' }}>Stop Record</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+
+  };
+  return (
+    <ViroARSceneMain />
+  )
+}
 
 var styles = StyleSheet.create({
+  mainContainer: {
+    height: ScreenHeight,
+    width: '100%',
+    position: 'relative',
+  },
   f1: { flex: 1 },
   helloWorldTextStyle: {
     fontFamily: 'Arial',
@@ -309,4 +369,4 @@ var styles = StyleSheet.create({
 });
 
 
-export default VRScreen;
+export default ArChallengeCapture;
