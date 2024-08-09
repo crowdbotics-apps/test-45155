@@ -35,6 +35,10 @@
 			</dict>
 		</dict>
 	</dict>
+  <key>NSPhotoLibraryUsageDescription</key>
+  <string>$(PRODUCT_NAME)photos description.</string>
+  <key>NSPhotoLibraryAddUsageDescription</key>
+  <string>$(PRODUCT_NAME) photos add description.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>The camera is needed for AR functionality</string>
   <key>NSMicrophoneUsageDescription</key>

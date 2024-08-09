@@ -14,7 +14,7 @@ const WelcomeScreen = () => {
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.group} />
         <View style={styles.group}>
-          <Image style={styles.logo} source={require("./logo.png")} />
+          <Image style={styles.logo} source={require("../../assets/logo.png")} />
           <Text style={styles.text}>
             Let's build something amazing together!
           </Text>

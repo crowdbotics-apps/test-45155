@@ -8,9 +8,10 @@ import {
 } from "react-native";
 import {
   ViroARScene,
+  ViroARCamera,
   ViroMaterials,
   ViroTrackingStateConstants,
-  ViroARSceneNavigator,
+  Viro3DSceneNavigator,
   Viro3DObject,
   ViroAmbientLight,
   ViroDirectionalLight,
@@ -20,9 +21,12 @@ let ScreenHeight = Dimensions.get("window").height;
 
 ViroMaterials.createMaterials({
   pbr: {
-    lightingModel: "Phong",
-    roughness: 0.0,
-    metalness: 1.0,
+    lightingModel: "PBR",
+    blendMode: "Alpha",
+    bloomThreshold: 1,
+    bloomEnabled: true,
+    diffuseTexture: require('../../assets/Quinn_opacity/T_Quinn_01_emissive.png'),
+    specularTexture: require('../../assets/Quinn_opacity/T_Quinn_02ID_opacity.png'),
   },
 });
 
@@ -127,11 +131,13 @@ const ARScreen = () => {
 
   return (
     <ViroARScene onTrackingUpdated={onInitialized}>
-      <ViroAmbientLight color="#FFFFFF" intensity={250} />
-      <ViroDirectionalLight color="#FFFFFF" direction={[0, -1, 0]} />
-      <ViroDirectionalLight color="#FFFFFF" direction={[0, 0, -1]} />
-      <ViroDirectionalLight color="#FFFFFF" direction={[-1, 0, 0]} />
+      <ViroAmbientLight color="#ffffff" intensity={20} />
 
+      {/* DirectionalLight with the direction away from the user, pointed upwards, to light up the "face" of the model */}
+      <ViroDirectionalLight color="#ffffff" direction={[0, -1, -.2]} />
+      <ViroDirectionalLight castsShadow={true} color="#ffffff" direction={[.05, 0.05, .05]} />
+
+      {/* Spotlight on top of the model to highlight this model*/}
       <ViroSpotLight
         innerAngle={5}
         outerAngle={90}
@@ -140,81 +146,30 @@ const ARScreen = () => {
         color="#ffffff"
         intensity={250} />
 
+      <ViroSpotLight
+        position={[1, 3, 1]}
+        direction={[-1, -1, -1]}
+        color="grey"
+        intensity={750}
+        attenuationStartDistance={1}
+        attenuationEndDistance={10}
+        innerAngle={45}
+        outerAngle={90}
+        castsShadow
+        shadowMapSize={2048}
+        shadowNearZ={1}
+        shadowFarZ={4}
+        shadowOpacity={1.0}
+      />
 
-      {/* <Viro3DObject
-        source={require('../../assets/FinalBaseMesh.obj')}
-        type="OBJ"
-        materials={"pbr"}
-        position={[0.0, 0.0, -20]}
-        scale={[0.3, 0.3, 0.3]}
-        onDrag={_onDrag}
-        onHover={_onHoverDoSomething}
-        onScroll={_onScroll}
-        onSwipe={_onSwipe}
-        onTouch={_onTouch}
-        onPinch={_onPinch}
-        onRotate={_onRotate}
-        rotation={rotate}
-      /> */}
-
-      {/* <Viro3DObject
+      <Viro3DObject
         source={require('../../assets/PinOBJ/PinOBJ.obj')}
         resources={[
           require('../../assets/PinOBJ/PinOBJ.mtl'),
         ]}
-        materials={"pbr"}
         type="OBJ"
-        position={[0.0, 0, -10]}
-        scale={[0.001, 0.001, 0.001]}
-        onDrag={_onDrag}
-        onHover={_onHoverDoSomething}
-        onScroll={_onScroll}
-        onSwipe={_onSwipe}
-        onTouch={_onTouch}
-        onPinch={_onPinch}
-        onRotate={_onRotate}
-      /> */}
-
-      <Viro3DObject
-        source={require('../../assets/Star_Anim/Star_Anim.vrx')}
-        materials={"pbr"}
-        type="VRX"
-        position={[0.0, 0, -10]}
-        scale={[0.03, 0.03, 0.03]}
-        onDrag={_onDrag}
-        onHover={_onHoverDoSomething}
-        onScroll={_onScroll}
-        onSwipe={_onSwipe}
-        onTouch={_onTouch}
-        onPinch={_onPinch}
-        onRotate={_onRotate}
-        animation={{
-          name: 'Take 001',
-          run: true,
-          loop: true,
-          delay: 1000
-        }}
-      />
-
-      <Viro3DObject
-        source={require('../../assets/VRX_RoamTT_Pin/SM_RoamTT_Pin.vrx')}
-        materials={"pbr"}
-        type="VRX"
-        position={[-4, 0, -10]}
-        scale={[0.03, 0.03, 0.03]}
-        onDrag={_onDrag}
-        onHover={_onHoverDoSomething}
-        onScroll={_onScroll}
-        onSwipe={_onSwipe}
-        onTouch={_onTouch}
-        onPinch={_onPinch}
-        onRotate={_onRotate}
-        animation={{
-          name: 'Take 001',
-          run: true,
-          loop: true,
-          delay: 1000
-        }}
+        position={[0.0, 0.0, -10]}
+        scale={[0.1, 0.1, 0.1]}
       />
 
       {/* <Viro3DObject
@@ -356,7 +311,7 @@ const ArChallengeCapture = ({
         console.log("startRecordVideo: error:", error)
       }
       this._arNavigator
-        ._startVideoRecording('recording', true, onError)
+        ._startVideoRecording('recording', false, onError)
     }
 
     async stopRecordVideo() {
@@ -369,12 +324,7 @@ const ArChallengeCapture = ({
       return (
         <View
           style={styles.mainContainer}>
-          <ViroARSceneNavigator
-            autofocus={true}
-            pbrEnabled={true}
-            hdrEnabled={true}
-            bloomEnabled={true}
-            ref={this._setARNavigatorRef}
+          <Viro3DSceneNavigator
             initialScene={{
               scene: ARScreen,
             }}

@@ -1,10 +1,12 @@
 /**
- * Metro configuration for React Native
- * https://github.com/facebook/react-native
+ * Metro configuration
+ * https://facebook.github.io/metro/docs/configuration
  *
- * @format
+ * @type {import('metro-config').MetroConfig}
  */
+
 const path = require("path")
+const { getDefaultConfig, mergeConfig } = require("@react-native/metro-config");
 
 const extraNodeModules = {
   "@components": path.resolve(__dirname, "components"),
@@ -24,20 +26,22 @@ const watchFolders = [
   path.resolve(__dirname, "helpers")
 ]
 
-module.exports = {
+const defaultConfig = getDefaultConfig(__dirname);
+
+const config = {
   transformer: {
     getTransformOptions: async () => ({
       transform: {
         experimentalImportSupport: false,
-        inlineRequires: false
-      }
-    })
+        inlineRequires: true,
+      },
+    }),
   },
   resolver: {
-    sourceExts: ["js", "jsx", "ts", "tsx", "json"],
-    assetExts: ["db", "mp3", "ttf", "obj", "png", "jpg", "otf", "mtl", "vrx", "fbx", "obj",
+    assetExts: [
+      ...defaultConfig.resolver.assetExts,
+      "obj",
       "mtl",
-      "mp3",
       "JPG",
       "vrx",
       "hdr",
@@ -45,15 +49,18 @@ module.exports = {
       "glb",
       "bin",
       "arobject",
-      "gif","PNG"],
+      "gif",
+    ],
     extraNodeModules: new Proxy(extraNodeModules, {
       get: (target, name) =>
         //redirects dependencies referenced from extraNodeModules to local node_modules
         name in target
           ? target[name]
           : path.join(process.cwd(), "node_modules", name)
-    })
+    }),
+    watchFolders,
+    resetCache: true
   },
-  watchFolders,
-  resetCache: true
-}
+};
+
+module.exports = mergeConfig(defaultConfig, config);

@@ -12,8 +12,8 @@ target 'test_45155' do
     # to enable hermes on iOS, change `false` to `true` and then install pods
     :hermes_enabled => false
   )
-  pod 'ViroReact', :path => '../node_modules/@viro-community/react-viro/ios/'
-  pod 'ViroKit', :path => '../node_modules/@viro-community/react-viro/ios/dist/ViroRenderer/'
+  pod 'ViroReact', :path => '../node_modules/@reactvision/react-viro/ios/'
+  pod 'ViroKit', :path => '../node_modules/@reactvision/react-viro/ios/dist/ViroRenderer/'
 
   post_install do |installer|
     react_native_post_install(

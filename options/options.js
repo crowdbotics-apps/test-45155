@@ -6,7 +6,8 @@ export const globalOptions = {
   api: "https://test-45155.botics.co/api/v1",
   screenOptions: {
     headerShown: false
-  }
+  },
+  initialRoute: "ar"
 }
 export const modulesOptions = {
   "@modules/app-menu": {
